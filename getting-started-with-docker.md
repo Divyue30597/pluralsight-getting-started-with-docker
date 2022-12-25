@@ -214,7 +214,7 @@ Swarm mode lets you cluster multiple Docker hosts into a secure, highly availabl
 
 ![docker-swarm](./docker-swarm-example-on-play-with-docker.png)
 
-**To initialize a docker swarm on docker-desktop / host machine:**
+**To initialize a docker swarm on docker-desktop / host machine:** This will initialize the swarm and assigning that particular docker node as the leader and manager as well.
 
 ```docker
 docker swarm init
@@ -228,7 +228,7 @@ Limitation: If you are running with Docker Desktop, you can still run in swarm m
 docker swarm init --advertise-addr=192.168.0.28
 ```
 
-`--advertise-addr` -> What it's doing is telling Docker which of the host IPs to use for the cluster communication. In Play with Docker, you can use the node's 192.168 address. And if you're in a public cloud like, I don't know, AWS or whatever, you should just use one of the instance's private IPs.  
+`--advertise-addr` -> What it's doing is telling Docker which of the host IPs to use for the cluster communication. In Play with Docker, you can use the node's 192.168 address. And if you're in a public cloud like, AWS, you should just use one of the instance's private IPs.  
 When we run the above command, we have initialized a swarm and out first manager.
 
 ### Manager command
@@ -237,7 +237,7 @@ When we run the above command, we have initialized a swarm and out first manager
 docker swarm join-token manager
 ```
 
-**To add a manager to this swarm, run the following command:**
+**To add a manager to this swarm, run the following command:** This manager command has to be added to 2 more nodes since we need odd numbers of managers so we don't get a split brain condition here, where we select even numbers of managers and if group of managers fail, then there will be an issue since no majority can be find anywhere since nodes will be split evenly.
 
 ```docker
 docker swarm join --token SWMTKN-1-1qqgmygrzjhp1fjz4zehedlrhjr7hxgcpw5p893p3un8ob5kqy-ba3d0eao9fmnskc2hwg54jvk5 192.168.0.28:2377
@@ -249,13 +249,13 @@ docker swarm join --token SWMTKN-1-1qqgmygrzjhp1fjz4zehedlrhjr7hxgcpw5p893p3un8o
 docker swarm join-token worker
 ```
 
-**To add a worker to this swarm, run the following command:**
+**To add a worker to this swarm, run the following command:** This should be added to 1 more workers
 
 ```docker
 docker swarm join --token SWMTKN-1-1qqgmygrzjhp1fjz4zehedlrhjr7hxgcpw5p893p3un8ob5kqy-7es2bd4fgxhha3jpdoal96ogb 192.168.0.28:2377
 ```
 
-**To view all the active nodes:**
+**To view all the active nodes:** Only manager can do this not workers
 
 ```docker
 docker node ls
